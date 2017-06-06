@@ -1,0 +1,31 @@
+server {
+    listen 80;
+    server_name site.ddk;
+    root /var/www/site.dev/public;
+    index index.php;
+
+    access_log /var/log/nginx/site.ddk-access.log;
+    error_log /var/log/nginx/site.ddk-error.log info;
+
+    location / {
+        # rewrite ^/(.*)/$ /$1 permanent;
+        try_files $uri /index.php$is_args$query_string;
+    }
+
+    # Avoid processing of calls to non-existing static files to php
+    location ~ \.(css|gif|html|ico|jpeg|jpg|js|png|xml)$ {
+        try_files $uri =404;
+    }
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        include fastcgi_params;
+        fastcgi_pass php71.ddk:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
+    }
+
+    location ~ /\. {
+        deny all;
+    }
+}

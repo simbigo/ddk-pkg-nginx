@@ -1,0 +1,13 @@
+{
+    "container_name": "nginx.ddk",
+    "image": "nginx:stable",
+    "ports": [
+        "80:80"
+    ],
+    "volumes": [
+        "${SHARE_PATH}/var/www:/var/www",
+        "${PACKAGE_PATH}/storage/etc/nginx/conf.d:/etc/nginx/conf.d:ro",
+        "${PACKAGE_PATH}/storage/etc/nginx/nginx.conf:/etc/nginx/nginx.conf:ro",
+        "${PACKAGE_PATH}/storage/var/log/nginx:/var/log/nginx"
+    ]
+}
